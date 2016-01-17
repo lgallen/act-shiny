@@ -75,7 +75,16 @@ shinyServer(function(input, output) {
     plot_ly(dftest(), z = eval(parse(text = radioC)), text = hover, locations = code, type = 'choropleth',
             locationmode = 'USA-states', color = eval(parse(text = radioC)), colors = 'Purples',
             marker = list(line = l), hoverinfo='location+text', colorbar = list(title = labName())) %>%
-      layout(title = paste(c("","<br>",year(), input$panelID, "Scores","<br>","(hover or zoom for more detail)"), collapse = " "), 
+      layout(    
+        
+                 margin = list(
+                   l = 0,
+                   r = 0,
+                   b = 0,
+                   t = 0,
+                   pad = 0
+                 ), 
+                 title = paste(c("","<br>",year(), input$panelID, "Scores","<br>","(hover or zoom for more detail)"), collapse = " "), 
              geo = g)
   })
   
