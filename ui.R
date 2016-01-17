@@ -30,7 +30,7 @@ shinyUI(pageWithSidebar(
     )
   ),
   mainPanel(
-#    textOutput("testing"),
+#    textOutput("testing")
 #    textOutput("columns"),
     plotlyOutput("trendPlot")
 #    dataTableOutput("newdf")

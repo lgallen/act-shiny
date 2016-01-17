@@ -3,22 +3,13 @@ library(shiny)
 library(plotly)
 library(dplyr)
 
+# Dataframe used for reactive radio selection later
 labelSAT <- data.frame(c('percent_tested','combined','math','writing','critical_reading'),c("% Tested","Comb","Math","Write","Read"),stringsAsFactors = FALSE)
 colnames(labelSAT) <- c('lab','name')
 labelACT <- data.frame(c('percent_tested','composite','math','english','reading','science'),c("% Tested",'Comp.',"Math","English","Reading","Science"),stringsAsFactors = FALSE)
 colnames(labelACT) <- c('lab','name')
 
-
-df1 <- data.frame(state.name,state.abb)
-colnames(df1) <- c("state","code")
-
-df <- merge(df,df1, all.x=TRUE)
-df$code <- as.character(df$code)
-df$code[9] <- "DC"
-
-
-
-
+# Parameters for Plotly
 # give state boundaries a white border
 l <- list(color = toRGB("white"), width = 2)
 # specify some map projection/options
@@ -43,14 +34,16 @@ shinyServer(function(input, output) {
     }
     
   })
-  
+
+# Returns year user selects  
   year <- reactive( {
     if (input$panelID=="ACT") {
       return(as.character(input$yearACT))} else {
         return(as.character(input$yearSAT))
       }
     })
-  
+
+# Reactive for radio choice returns percent_tested, math, etc.
   radioChoice <- reactive ({
     if (input$panelID=="ACT") {
       return(as.character(input$radioACT))} else {
@@ -59,7 +52,7 @@ shinyServer(function(input, output) {
   })
   
   
-  
+# Create a reactive dataframe based on user selections of test, year, and radio attribute.  
   dftest <- reactive({
     filepath <- paste(c('data/',tolower(input$panelID),"_",year(),".csv"),collapse = "")
     filter_data <- read.csv(filepath)
@@ -76,25 +69,28 @@ shinyServer(function(input, output) {
   })
     
   
-    
+# Create US choropleth    
   output$trendPlot <- renderPlotly({
-    plot_ly(dftest(), z = eval(parse(text = radioChoice())), text = hover, locations = code, type = 'choropleth',
-            locationmode = 'USA-states', color = eval(parse(text = radioChoice())), colors = 'Purples',
+    radioC <- radioChoice()
+    plot_ly(dftest(), z = eval(parse(text = radioC)), text = hover, locations = code, type = 'choropleth',
+            locationmode = 'USA-states', color = eval(parse(text = radioC)), colors = 'Purples',
             marker = list(line = l), hoverinfo='location+text', colorbar = list(title = labName())) %>%
       layout(title = paste(c("","<br>",year(), input$panelID, "Scores","<br>","(hover or zoom for more detail)"), collapse = " "), 
              geo = g)
   })
   
-  
-  output$testing <- renderText({year()
-  })
 
-  output$columns <- renderText({
-    colnames(dftest())
-  })
+# Outputs that follow for testing purposes only.    
+#  output$testing <- renderText({year()
+#  })
+
+#  output$columns <- renderText({
+#    colnames(dftest())
+#  })
   
-  output$newdf <- renderDataTable({
-    df3 <- dftest()
-    df3
-  })
+#  output$newdf <- renderDataTable({
+#    df3 <- dftest()
+#    df3
+#  })
+
 })
