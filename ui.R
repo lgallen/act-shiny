@@ -30,6 +30,7 @@ shinyUI(pageWithSidebar(
     )
   ),
   mainPanel(
+# Commented output for testing purposes only
 #    textOutput("testing")
 #    textOutput("columns"),
     plotlyOutput("trendPlot")
