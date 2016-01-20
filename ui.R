@@ -6,7 +6,7 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     tabsetPanel(
       tabPanel("ACT Data", value="ACT",
-               sliderInput('yearACT', label='Year of Exam', min=2004, max=2015, value=2014,sep="", step = 1, ticks=TRUE, round = TRUE),
+               sliderInput('yearACT', label='Year of Exam', min=2004, max=2015, value=2015,sep="", step = 1, ticks=TRUE, round = TRUE),
                radioButtons("radioACT", label = h4("Color Map By"),
                             choices = list("Percent Tested" = "percent_tested", 
                                            "Composite" = "composite",
