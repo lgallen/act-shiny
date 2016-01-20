@@ -4,9 +4,9 @@ library(plotly)
 library(dplyr)
 
 # Dataframe used for reactive radio selection later
-labelSAT <- data.frame(c('percent_tested','combined','math','writing','critical_reading'),c("% Tested","Comb","Math","Write","Read"),stringsAsFactors = FALSE)
+labelSAT <- data.frame(c('percent_tested','combined','math','writing','critical_reading'),c("% Test","Comb","Math","Write","Read"),stringsAsFactors = FALSE)
 colnames(labelSAT) <- c('lab','name')
-labelACT <- data.frame(c('percent_tested','composite','math','english','reading','science'),c("% Tested",'Comp.',"Math","English","Reading","Science"),stringsAsFactors = FALSE)
+labelACT <- data.frame(c('percent_tested','composite','math','english','reading','science'),c("% Test",'Comp.',"Math","English","Reading","Science"),stringsAsFactors = FALSE)
 colnames(labelACT) <- c('lab','name')
 
 # Parameters for Plotly
@@ -74,7 +74,7 @@ shinyServer(function(input, output) {
     radioC <- radioChoice()
     plot_ly(dftest(), z = eval(parse(text = radioC)), text = hover, locations = code, type = 'choropleth',
             locationmode = 'USA-states', color = eval(parse(text = radioC)), colors = 'Purples',
-            marker = list(line = l), hoverinfo='location+text', colorbar = list(title = labName())) %>%
+            marker = list(line = l), hoverinfo='location+text', colorbar = list(thickness = 15, xpad = 15,ypad=40,title = labName())) %>%
       layout(    
         
                  margin = list(
