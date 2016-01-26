@@ -1,8 +1,6 @@
 library(shiny)
 library(plotly)
 
-# 
-
 shinyUI(pageWithSidebar(
   headerPanel("Select Test"),
   sidebarPanel(
@@ -35,9 +33,12 @@ shinyUI(pageWithSidebar(
 # Commented output for testing purposes only
 #    textOutput("testing")
 #    textOutput("columns"),
-    plotlyOutput("trendPlot")
-#    dataTableOutput("newdf")
- 
-
+tabsetPanel(
+  tabPanel("US Map",
+    plotlyOutput("trendPlot")),
+  tabPanel("Table of Scores By State",
+    dataTableOutput("dfState")
+  )
+)
   )
 ))

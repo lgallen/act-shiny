@@ -2,6 +2,9 @@
 library(shiny)
 library(plotly)
 library(dplyr)
+library(DT)
+library(data.table)
+
 
 # Dataframe used for reactive radio selection later
 labelSAT <- data.frame(c('percent_tested','combined','math','writing','critical_reading'),c("% Test","Comb","Math","Write","Read"),stringsAsFactors = FALSE)
@@ -87,7 +90,19 @@ shinyServer(function(input, output) {
                  title = paste(c("","<br>",year(), input$panelID, "Scores","<br>","(hover or zoom for more detail)"), collapse = " "), 
              geo = g)
   })
-  
+
+  output$dfState <- renderDataTable({
+    df3 <- dftest()
+    df3 <- df3 %>% select(-hover,-code)
+    if ("rank" %in% colnames(df3)) {
+      df3 <- df3 %>% select(-rank)
+      }
+    DT :: datatable(df3, options = list(
+    lengthMenu = list(c(10, 20, 51),  c('10', '20', 'All')),
+     pageLength = 10),
+     rownames=FALSE)
+    
+  })
 
 # Outputs that follow for testing purposes only.    
 #  output$testing <- renderText({year()
@@ -97,9 +112,6 @@ shinyServer(function(input, output) {
 #    colnames(dftest())
 #  })
   
-#  output$newdf <- renderDataTable({
-#    df3 <- dftest()
-#    df3
-#  })
+
 
 })
